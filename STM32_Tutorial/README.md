@@ -300,7 +300,26 @@ Then add the following at the very end of FreeRTOSConfig.h:
 
 #endif /* FREERTOS_CONFIG_H */
 ```
+
 - And finally start the recorder in the main() function:
 ```
 xTraceEnable(TRC_START);		// <- Recorder starts now
 ```
+<p align="justify">
+Note that the recorder must be started before any OS event occurs, therefore before any object or task creation and obviously before the scheduler starts.
+</p>
+<p align="justify">
+Save all  and make sure that the project builds  without any error or warnings. Repair if needed by reviewing the above settings.
+</p>
+<p align="justify">
+You should take care of the reported level of bss memory since it includes the amount of memory that we reserved for both the FreeRTOS heap (7kB) and for the recorder (4kB). Remember that STM32F072 only features 16kB of RAM. Here, it's almost full...
+</p>
+<div align="center">
+  <img src="Image\4.jpeg" alt="Centered Image" />
+</div>
+
+Fortunately, the linker won't build if you exceed the amount of available RAM. You can try and double the **recorder** capacity for instance:
+```
+#define TRC_CFG_EVENT_BUFFER_SIZE 2000
+```
+## 2. Recording OS events

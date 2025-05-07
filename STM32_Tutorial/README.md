@@ -67,13 +67,13 @@ Next, add the TraceRecorder\include\ path to the build configuration and apply c
 ### 1.2. Configuring the Recorder
 Configuring the recorder requires some attention, especially because our target has very a limited amount of RAM (16kB). Most of this configuration takes place in headers located in the `/config` folder of the recorder source tree:
 
-- trcConfig.h
-- trcKernelPortConfig.h
-- rcSnapshotConfig.h
-- trcKernelPortSnapshotConfig.h
+- `trcConfig.h`
+- `trcKernelPortConfig.h`
+- `rcSnapshotConfig.h`
+- `trcKernelPortSnapshotConfig.h`
 
 Let us visit each of these header and see what configuration we have to do.
-#### 1-Open trcConfig.h:
+#### 1-Open `trcConfig.h`:
 Comment out the error message and include our target header:
 ```
 /******************************************************************************
@@ -134,7 +134,7 @@ Then apply following tuning:
 
 #define TRC_CFG_USE_TRACE_ASSERT            0
 ```
-#### 2-Open trcKernelPortConfig.h:
+#### 2-Open `trcKernelPortConfig.h`:
 The recorder can operate in Snapshot mode or in Streaming mode. The Streaming mode allows for recording long traces but it requires a dedicated tutorial. Here, we deal with the Snapshot mode:
 ```
 /**
@@ -193,9 +193,9 @@ Then turn off all other monitoring options:
 #define TRC_CFG_INCLUDE_STREAM_BUFFER_EVENTS   0
 #define TRC_CFG_ACKNOWLEDGE_QUEUE_SET_SEND     0
 ```
-#### 3-Open trcSnapshotConfig.h:
+#### 3-Open `trcSnapshotConfig.h`:
 <p align="justify">
-In Snapshot mode, kernel events are recorded in RAM (as an array in a structured variable, to be precise). Because of the limited availability of RAM in our target (16kB), the number of recorded events is also limited. When we start the program, the OS life is tracked until the recorder buffer is full. If 'STOP_WHEN_FULL' option is selected, the recorder then contains the n firsts events that came after the application started. Otherwise, if 'RING_BUFFER' is selected, the recorder keeps recording, replacing older events by new ones. When the execution is suspended (manually, in the debug session), the recorder therefore contains the n lasts events being observed. Note that under intense activity, the recorder may only contains few seconds (if not milliseconds) of the OS life.
+In Snapshot mode, kernel events are recorded in RAM (as an array in a structured variable, to be precise). Because of the limited availability of RAM in our target (16kB), the number of recorded events is also limited. When we start the program, the OS life is tracked until the recorder buffer is full. If `STOP_WHEN_FULL` option is selected, the recorder then contains the n firsts events that came after the application started. Otherwise, if `RING_BUFFER` is selected, the recorder keeps recording, replacing older events by new ones. When the execution is suspended (manually, in the debug session), the recorder therefore contains the n lasts events being observed. Note that under intense activity, the recorder may only contains few seconds (if not milliseconds) of the OS life.
 </p>
 Here, let's try to catch the beginning of our OS life:
 
@@ -253,7 +253,7 @@ And leave other options at their default values, except the size of the symbol t
 #define TRC_CFG_SYMBOL_TABLE_SIZE 200
 ```
 
-#### 4-Open trcKernelPortSnapshotConfig.h:
+#### 4-Open `trcKernelPortSnapshotConfig.h`:
 Adjust (lower) the maximum number of kernel objects that you want to monitor at a time
 
 ```
@@ -301,7 +301,7 @@ Then add the following at the very end of FreeRTOSConfig.h:
 #endif /* FREERTOS_CONFIG_H */
 ```
 
-- And finally start the recorder in the main() function:
+- And finally start the recorder in the `main()` function:
 ```
 xTraceEnable(TRC_START);		// <- Recorder starts now
 ```
@@ -326,41 +326,41 @@ Fortunately, the linker won't build if you exceed the amount of available RAM. Y
 Implement All Task and Project and Launch a debug session . You should get the debugger waiting at the beginning of main():
 
 Using the Expression view, add  the following expressions (global variables):
-- RecorderData
-- RecorderDataPtr
-- sizeof(RecorderData)
-- &RecorderData
+- `RecorderData`
+- `RecorderDataPtr`
+- `sizeof(RecorderData)`
+- `&RecorderData`
   
-Then select &RecorderData, and copy into the clipboard its address in memory:
+Then select `&RecorderData`, and copy into the clipboard its address in memory:
 <div align="center">
   <img src="Image\5.jpeg" alt="Centered Image" />
 </div>
 
-Also note that the size of the RecorderData variable is 5060 bytes. We'll need this information in a moment.
+Also note that the size of the `RecorderData` variable is 5060 bytes. We'll need this information in a moment.
 <p align="justify">
-Step over  the code until you pass the xTraceEnable(TRC_START) function and take a look (unfold) the RecorderData structure in the Expression view. You'll see that a lot of initializations have been performed. Notice that numEvents member is set to 1 and that RecorderDataPtr is a pointer that now points to the DataRecorder structured variable.
+Step over  the code until you pass the `xTraceEnable(TRC_START)` function and take a look (unfold) the RecorderData structure in the Expression view. You'll see that a lot of initializations have been performed. Notice that numEvents member is set to 1 and that `RecorderDataPtr` is a pointer that now points to the `DataRecorder structured` variable.
 </p>
 
 <div align="center">
   <img src="Image\6.jpeg" alt="Centered Image" />
 </div>
 <p align="justify">
-At this step, we have a very valuable information stored in the recorder memory, but it's not human-readable in its current form. What we need to do now is to transfer the MCU memory segment that corresponds to the DataRecorder variable into a file on your host computer. That action is called a memory dump.
+At this step, we have a very valuable information stored in the recorder memory, but it's not human-readable in its current form. What we need to do now is to transfer the MCU memory segment that corresponds to the DataRecorder variable into a file on your host computer. That action is called a `memory dump`.
 </p>
 
 - Open the  Memory view
 - Click Add Memory Monitor
-- Paste the previously copied address (alternatively, you can also enter &DataRecorder, or RecorderDataPtr) and click OK.
+- Paste the previously copied address (alternatively, you can also enter `&DataRecorder`, or `RecorderDataPtr`) and click OK.
 - Click the  Export button in the Memory view:
 <div align="center">
   <img src="Image\7.jpeg" alt="Centered Image" />
 </div>
 
 - Then carefully fill up the popup window:
-  - Select RAW Binary as export Format
-  - Make sure that Start  address is the one of the RecorderData structure you got above
+  - Select `RAW Binary` as export Format
+  - Make sure that Start  address is the one of the `RecorderData structure` you got above
   - Set the Length to anything bigger than the recorder length (you remember? It is 5060 bytes, so let say 6000)
-  - Give a name such as ram.bin to the destination file
+  - Give a name such as `ram.bin` to the destination file
 <div align="center">
   <img src="Image\8.jpeg" alt="Centered Image" />
 </div>
@@ -383,9 +383,9 @@ When done, you'll need to restart the IDE. Note that a new Percepio entry has be
   <img src="Image\10.jpeg" alt="Centered Image" />
 </div>
 
-Go to Percepio → Preferences and review the settings, in particular the Tracealyzer Path that must indicate the full path to the Tracealyzer executable. I also recommend filling the Trace Filename field with the file of your choice (e.g., "ram.bin") so that every new trace just overwrites the previous one and then avoids filling your hard drive with tons of trace files.
+Go to Percepio → Preferences and review the settings, in particular the Tracealyzer Path that must indicate the full path to the Tracealyzer executable. I also recommend filling the Trace Filename field with the file of your choice (e.g., `ram.bin`) so that every new trace just overwrites the previous one and then avoids filling your hard drive with tons of trace files.
 
-You may notice that the plugin does nothing more than automating the memory dump process that you've done manually just before. As you did, it uses RecoredDataPtr (the pointer) to locate the RecorderData structure in memory and then uses the size sizeof(*RecoredDataPtr) to adjust the dump length. No magic here! Still, very useful.
+You may notice that the plugin does nothing more than automating the memory dump process that you've done manually just before. As you did, it uses RecoredDataPtr (the pointer) to locate the RecorderData structure in memory and then uses the size sizeof(`*RecoredDataPtr`) to adjust the dump length. No magic here! Still, very useful.
 <div align="center">
   <img src="Image\11.jpeg" alt="Centered Image" />
 </div>

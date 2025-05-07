@@ -53,3 +53,13 @@ Again, some cleanup is necessary:
 - Remove all remaining files that are neither `source (.c)` nor `header (.h)`
 
 By the end of the cleanup, your project structure should look like this. That's indeed a lot of new files, but don't worry, we will just deal with a few configuration headers.
+
+<div align="center">
+  <img src="Image\2.jpeg" alt="Centered Image" />
+</div>
+
+Next, add the TraceRecorder\include\ path to the build configuration and apply changes:
+
+<div align="center">
+  <img src="Image\3.jpeg" alt="Centered Image" />
+</div>

@@ -194,9 +194,9 @@ Then turn off all other monitoring options:
 #define TRC_CFG_ACKNOWLEDGE_QUEUE_SET_SEND     0
 ```
 #### 3-Open `trcSnapshotConfig.h`:
-<p align="justify">
+
 In Snapshot mode, kernel events are recorded in RAM (as an array in a structured variable, to be precise). Because of the limited availability of RAM in our target (16kB), the number of recorded events is also limited. When we start the program, the OS life is tracked until the recorder buffer is full. If `STOP_WHEN_FULL` option is selected, the recorder then contains the n firsts events that came after the application started. Otherwise, if `RING_BUFFER` is selected, the recorder keeps recording, replacing older events by new ones. When the execution is suspended (manually, in the debug session), the recorder therefore contains the n lasts events being observed. Note that under intense activity, the recorder may only contains few seconds (if not milliseconds) of the OS life.
-</p>
+
 Here, let's try to catch the beginning of our OS life:
 
 ```

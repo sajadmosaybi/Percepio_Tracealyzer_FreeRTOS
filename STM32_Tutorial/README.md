@@ -38,4 +38,18 @@ You can open the file \config\trcConfig.h in both distributions to see what you 
 On the other hand, the recorder that comes with Tracealyzer is in version 4.8.1 and displays support for FreeRTOS up to version 10.5.1. (even through the configuration for v10.5.1 refers to v10.4.0). Anyway, we will take that one!
 </p>
 
+<div align="center">
+  <img src="Image\1.jpeg" alt="Centered Image" />
+</div>
 
+After you've located the recorder source files on your computer, create a new source folder `TraceRecorder` in your project structure and Copy/Paste source files.
+
+Again, some cleanup is necessary:
+
+- Delete the `/extras` folder
+
+- In the `/streamports` folder, delete all folders except the /Jlink_RTT folder
+
+- Remove all remaining files that are neither `source (.c)` nor `header (.h)`
+
+By the end of the cleanup, your project structure should look like this. That's indeed a lot of new files, but don't worry, we will just deal with a few configuration headers.

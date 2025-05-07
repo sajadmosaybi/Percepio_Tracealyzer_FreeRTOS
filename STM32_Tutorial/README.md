@@ -1,55 +1,25 @@
+# Tracing OS events
+In these tutorials, we will make intensive use a commercial tool to illustrate FreeRTOS mechanisms. This tool is Tracealyzer® from Percepio®.
 
-# Percepio Trace Exporter
+You may take some time to visit Percepio® website:
 
-The **Percepio Trace Exporter** is an Eclipse plugin designed to seamlessly integrate your Eclipse-based IDE with [Percepio Tracealyzer](https://percepio.com/tracealyzer/). This integration facilitates the capture of snapshot trace data from embedded applications, enhancing debugging and performance analysis.
+- **Tracealyzer**Tracealyzer [main page](https://percepio.com/tracealyzer/)
+- **Tracealyzer**Tracealyzer for FreeRTOS [user manual](https://percepio.com/getstarted/latest/html/freertos.html)
+If you cannot get access to a **Tracealyzer** license (sorry for you), you may skip this tutorial and still profit from the several screenshots that you will find along these tutorials.
 
-## Features
+Otherwise, and if you want to be able to record and analyze what's happening in your FreeRTOS projects, you are highly encouraged to setup your project in order to get those OS traces. That's really helpful, and highly instructive.
 
-- **Snapshot Trace Capture**: Easily capture snapshot traces from your embedded applications during debugging sessions.
-- **IDE Integration**: Integrates with Eclipse-based IDEs, including STM32CubeIDE, to provide a streamlined workflow.
-- **Debug Probe Compatibility**: Supports any debug probe compatible with your existing toolchain.
-- **Cross-Platform Support**: Available for Windows, macOS, and Linux/GTK platforms.
+The only thing you need to know at the moment is that tracing OS events requires two pieces of software:
 
-## Installation
+- The **recorder** is running on your target MCU while OS is executing. It captures and records events at runtime in a memory buffer . It is provided as a set of source files (just like FreeRTOS) you need to include and configure in your MCU project. You can see it as a spying program working from the inside of the firmware.
 
-### Option 1: Eclipse Marketplace
+- The **Tracealyzer** is a computer application which provides visual tools to help analyze OS behavior based on stored events. It uses the information gathered by the recorder and provide views into a user-friendly graphical interface.
+There are two methods for transferring events stored in the MCU memory by the recorder to the **Tracealyzer** computer application:
 
-1. Open your Eclipse-based IDE.
-2. Navigate to `Help` > `Eclipse Marketplace...`.
-3. In the **Find** field, enter `Percepio Trace Exporter`.
-4. Click **Install** next to the plugin entry.
-5. Follow the installation prompts and restart the IDE when prompted.
+- Using a memory dump from the debugger while program execution is suspended (**snapshot** mode)
 
-### Option 2: Update Site
+- Using a real-time streaming while program executes (**streaming** mode)
 
-1. Open your Eclipse-based IDE.
-2. Go to `Help` > `Install New Software...`.
-3. In the **Work with** field, enter the update site URL: `https://percepio.com/exporter`
-4. Press **Enter** and wait for the plugin list to populate.
-5. Expand the **Percepio** category, select **Percepio Trace Exporter**, and click **Next**.
-6. Follow the installation prompts and restart the IDE when prompted.
+This tutorial only covers the **snapshot** mode, which I find easier to setup for a start.
 
-## Usage
-
-1. Start a debugging session in your Eclipse-based IDE.
-2. Once the application is halted at a breakpoint, navigate to `Percepio` > `Save Snapshot`.
-3. The captured snapshot will be saved and can be opened with Percepio Tracealyzer for detailed analysis.
-
-## Requirements
-
-- **Eclipse Versions**: Compatible with Eclipse versions 4.3 (Kepler) through 4.19 (2021-03).
-- **Java Runtime**: Ensure that your Java Runtime Environment supports the necessary cryptographic extensions. If you encounter issues related to encryption during installation, consider installing the Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files.
-
-## License
-
-This plugin is distributed under the [BSD License](https://opensource.org/licenses/BSD-3-Clause).
-
-## Support
-
-- **Official Website**: [https://percepio.com](https://percepio.com)
-- **Tracealyzer**: [https://percepio.com/tracealyzer/](https://percepio.com/tracealyzer/)
-- **Eclipse Marketplace**: [Percepio Trace Exporter](https://marketplace.eclipse.org/content/percepio-trace-exporter)
-
-For further assistance or to report issues, please contact [support@percepio.com](mailto:support@percepio.com).
-
-*Note: This README is based on information available as of January 15, 2021. For the most recent updates and support, please refer to the official Percepio website.*
+At time of writing, **Tracealyzer** version is 4.8.1. Again, I strongly encourage you to use the same version as me until you get enough understanding of the recorder integration. You can get **Tracealyzer** installers from the Percepio® website: https://percepio.com/tracealyzer/update.

@@ -355,3 +355,14 @@ At this step, we have a very valuable information stored in the recorder memory,
 <div align="center">
   <img src="Image\7.jpeg" alt="Centered Image" />
 </div>
+
+- Then carefully fill up the popup window:
+  - Select RAW Binary as export Format
+  - Make sure that Start  address is the one of the RecorderData structure you got above
+  - Set the Length to anything bigger than the recorder length (you remember? It is 5060 bytes, so let say 6000)
+  - Give a name such as ram.bin to the destination file
+<div align="center">
+  <img src="Image\8.jpeg" alt="Centered Image" />
+</div>
+
+Click **OK**. You should get a file ram.bin created on your computer, which is a copy of the actual STM32 memory content. 

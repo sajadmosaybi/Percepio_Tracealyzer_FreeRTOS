@@ -335,3 +335,23 @@ Then select &RecorderData, and copy into the clipboard its address in memory:
 <div align="center">
   <img src="Image\5.jpeg" alt="Centered Image" />
 </div>
+
+Also note that the size of the RecorderData variable is 5060 bytes. We'll need this information in a moment.
+<p align="justify">
+Step over  the code until you pass the xTraceEnable(TRC_START) function and take a look (unfold) the RecorderData structure in the Expression view. You'll see that a lot of initializations have been performed. Notice that numEvents member is set to 1 and that RecorderDataPtr is a pointer that now points to the DataRecorder structured variable.
+</p>
+
+<div align="center">
+  <img src="Image\6.jpeg" alt="Centered Image" />
+</div>
+<p align="justify">
+At this step, we have a very valuable information stored in the recorder memory, but it's not human-readable in its current form. What we need to do now is to transfer the MCU memory segment that corresponds to the DataRecorder variable into a file on your host computer. That action is called a memory dump.
+</p>
+
+- Open the  Memory view
+- Click Add Memory Monitor
+- Paste the previously copied address (alternatively, you can also enter &DataRecorder, or RecorderDataPtr) and click OK.
+- Click the  Export button in the Memory view:
+<div align="center">
+  <img src="Image\7.jpeg" alt="Centered Image" />
+</div>

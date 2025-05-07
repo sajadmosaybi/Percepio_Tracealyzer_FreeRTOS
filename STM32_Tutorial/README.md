@@ -323,3 +323,15 @@ Fortunately, the linker won't build if you exceed the amount of available RAM. Y
 #define TRC_CFG_EVENT_BUFFER_SIZE 2000
 ```
 ## 2. Recording OS events
+Implement All Task and Project and Launch a debug session . You should get the debugger waiting at the beginning of main():
+
+Using the Expression view, add  the following expressions (global variables):
+- RecorderData
+- RecorderDataPtr
+- sizeof(RecorderData)
+- &RecorderData
+  
+Then select &RecorderData, and copy into the clipboard its address in memory:
+<div align="center">
+  <img src="Image\5.jpeg" alt="Centered Image" />
+</div>

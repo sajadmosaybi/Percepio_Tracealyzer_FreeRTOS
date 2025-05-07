@@ -366,3 +366,32 @@ At this step, we have a very valuable information stored in the recorder memory,
 </div>
 
 Click **OK**. You should get a file ram.bin created on your computer, which is a copy of the actual STM32 memory content. 
+## 3. Analyzing the trace
+From Windows launch menu, start **Tracealyzer**.
+
+Within **Tracealyzer**, select File →**Open**→**Open File** and browse to ram.bin. You can also just drag and drop the ram.bin file into the **Tracealyzer** window.
+## 4. Using Percepio® Eclipse plugin
+The process of memory dumping and loading of **Tracealyzer** is not difficult, but it can be made even easier using a **Percepio** plugin within **STM32CubeIDE**.
+
+Open **Help** →  **Eclipse Marketplace**... and search for **percepio** plugins. Then **install** the **Trace Exporter** for STM32CubeIDE.
+<div align="center">
+  <img src="Image\9.jpeg" alt="Centered Image" />
+</div>
+
+When done, you'll need to restart the IDE. Note that a new Percepio entry has been added in the top menu:
+<div align="center">
+  <img src="Image\10.jpeg" alt="Centered Image" />
+</div>
+
+Go to Percepio → Preferences and review the settings, in particular the Tracealyzer Path that must indicate the full path to the Tracealyzer executable. I also recommend filling the Trace Filename field with the file of your choice (e.g., "ram.bin") so that every new trace just overwrites the previous one and then avoids filling your hard drive with tons of trace files.
+
+You may notice that the plugin does nothing more than automating the memory dump process that you've done manually just before. As you did, it uses RecoredDataPtr (the pointer) to locate the RecorderData structure in memory and then uses the size sizeof(*RecoredDataPtr) to adjust the dump length. No magic here! Still, very useful.
+<div align="center">
+  <img src="Image\11.jpeg" alt="Centered Image" />
+</div>
+
+When done, the process for loading a trace into Tracealyzer is as simple as:
+- Start a debug session 
+- Run the program for a little while  to let the recorder capture some events
+- Suspend execution 
+- Go to Percepio → Save Snapshot Trace. It opens Tracealyzer and loads the last recorded events automatically. If already opened, you'll get a dialog box asking for reloading.
